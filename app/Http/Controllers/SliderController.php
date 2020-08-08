@@ -20,11 +20,13 @@ class SliderController extends Controller
         $this->middleware('auth');
     }
 
+    // Muestra las imagenes que se han agregado al Slider
     public function view() {
         $images = App\Slider::paginate(5);
         return view('slider.sliderView', compact('images'));
     }
 
+    // Retorna el formulario para agregar
     public function new() {
         /*if ($request->method() == 'POST') {
             echo 'Ok';
@@ -32,6 +34,7 @@ class SliderController extends Controller
         return view('slider.newSlider');
     }
 
+    // Se agrega la funcion para insertar la imagen a la BD
     public function add(Request $request) {
         $newImage = new App\Slider;
 

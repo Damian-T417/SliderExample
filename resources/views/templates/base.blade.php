@@ -24,8 +24,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                            <a class="nav-link active" href="#">Slider <span class="sr-only">(current)</span></a>
-                            <a class="nav-link" href="{{ Route('slider_view') }}">CRUD</a>
+                            <a class="nav-link @if (Route::has('slider_view')) active @endif" href="{{ Route('home') }}">Slider</a>
+                            <a class="nav-link @if (Route::has('slider_view')) active @endif" href="{{ Route('slider_view') }}">CRUD</a>
                         </div>
                     </div>
                 </nav>
