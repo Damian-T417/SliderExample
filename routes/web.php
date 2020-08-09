@@ -18,8 +18,14 @@ Route::get('/', 'HomeController@index')->name('home');
 
 //Slider Routes
 Route::get('/slider', 'SliderController@view')->name('slider_view');
+
 Route::get('/slider/new', 'SliderController@new')->name('slider_new');
-Route::post('/slider/add', 'SliderController@add')->name('slider_add');
+Route::post('/slider/new', 'SliderController@new')->name('slider_add');
+
+Route::get('/slider/edit/{id}', 'SliderController@edit')->name('slider_edit');
+Route::post('/slider/edit/{id}', 'SliderController@edit')->name('slider_change');
+
+Route::delete('/slider/delete/{id}', 'SliderController@delete')->name('slider_delete');
 
 Auth::routes();
 

@@ -28,27 +28,52 @@ class SliderController extends Controller
 
     // Retorna el formulario para agregar
     public function new() {
-        /*if ($request->method() == 'POST') {
-            echo 'Ok';
-        }*/
-        return view('slider.newSlider');
+        if ($request->method() == 'POST') {
+            $newImage = new App\Slider;
+
+            $newImage->title = $request->input('title');
+            
+            $image = $request->file('image');
+            $name = Str::slug($request->input('title')).'_'.time();   
+            $folder = '/uploads/images/';
+            $filepath = $folder.$name.'.'.$image->getClientOriginalExtension();
+            $this->uploadOne($image,$folder,'public',$name);
+            $newImage->image = $filepath;
+
+            $newImage->save();
+
+            return redirect('/slider')->with(['message' => 'Se ha añadido la imagen correctamente']);
+        } else {
+            return view('slider.newSlider');
+        }
     }
 
-    // Se agrega la funcion para insertar la imagen a la BD
-    public function add(Request $request) {
-        $newImage = new App\Slider;
+    public function edit(Request $request, $id) {
+        $image = App\Slider::findOrFail($id);
 
-        $newImage->title = $request->input('title');
+        if ($request->method() == 'POST') {
+
+            $image->title = $request->input('title');
         
-        $image = $request->file('image');
-        $name = Str::slug($request->input('title')).'_'.time();   
-        $folder = '/uploads/images/';
-        $filepath = $folder.$name.'.'.$image->getClientOriginalExtension();
-        $this->uploadOne($image,$folder,'public',$name);
-        $newImage->image = $filepath;
+            $img = $request->file('image');
+            $name = Str::slug($request->input('title')).'_'.time();   
+            $folder = '/uploads/images/';
+            $filepath = $folder.$name.'.'.$img->getClientOriginalExtension();
+            $this->uploadOne($img,$folder,'public',$name);
+            $image->image = $filepath;
 
-        $newImage->save();
+            $image->save();
 
-        return redirect('/slider')->with(['message' => 'Se ha añadido la imagen correctamente']);
+            return redirect('/slider')->with(['message' => 'Se ha moificado la imagen correctamente']);
+        } else {
+            return view('slider.editSlider', compact('image'));
+        }
     }
+
+    public function delete(Request $request, $id) {
+        $image = App\Slider::findOrFail($id);
+        $image->delete();
+        return redirect('/slider')->with(['message' => 'Se ha borrado la imagen']);
+    }
+
 }
